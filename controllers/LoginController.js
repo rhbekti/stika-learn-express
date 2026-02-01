@@ -6,7 +6,7 @@ const prisma = require('../prisma/client')
 const login = async (req, res) => {
   const errors = validationResult(req)
 
-  if (!errors.isEmpty) {
+  if (!errors.isEmpty()) {
     return res.status(422).json({
       success: false,
       message: 'Validation Error',
@@ -47,7 +47,7 @@ const login = async (req, res) => {
       expiresIn: '1h'
     })
 
-    const { ...userWithoutPassword } = user
+    const { password, ...userWithoutPassword } = user
 
     return res.status(200).json({
       success: true,

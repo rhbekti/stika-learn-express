@@ -6,6 +6,8 @@ const router = require('./routes')
 const pino = require('pino')
 const pinoHttp = require('pino-http')
 const rateLimit = require('express-rate-limit')
+const swaggerUi = require('swagger-ui-express')
+const swaggerDocument = require('./swagger.json')
 
 dotenv.config()
 
@@ -46,7 +48,12 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api', router)
+app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument))
 
-app.listen(port, () => {
-  console.log(`Server started on port ${port}`)
-})
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Server started on port ${port}`)
+  })
+}
+
+module.exports = app
